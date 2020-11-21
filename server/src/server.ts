@@ -1,8 +1,15 @@
 import express from 'express';
-const app = express();
+import './database';
+import "reflect-metadata";
 
-app.get('/users', (request, response) => {
-    return response.send('Hello world')
+const app = express();
+app.use(express.json());
+
+
+app.get('/', (request, response) => {
+    return response.json('Hello world')
 });
 
-app.listen(3333);
+app.listen(3333, () =>{
+    console.log('Servidor Rodando');
+});
