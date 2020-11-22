@@ -11,9 +11,9 @@ const examsRouter = Router();
 examsRouter.post('/', async (request, response) => {
     try{
         const { name } = request.body;
-        const employeesController = new ExamsController();
+        const examsController = new ExamsController();
 
-        const exam = await employeesController.store({
+        const exam = await examsController.store({
             name
         });
 
