@@ -1,8 +1,8 @@
 import { request, response, Router} from 'express';
-import {getRepository} from 'typeorm';
-
+import {getRepository,MoreThanOrEqual } from 'typeorm';
 import ExaminationsController from '../app/controllers/ExaminationsController';
 import Examinations from '../app/models/Examinations';
+import  Exams from '../app/models/Exams';
 
 const examinationsRouter = Router();
 
@@ -25,6 +25,13 @@ examinationsRouter.post('/', async (request, response) => {
 examinationsRouter.get('/', async(request, response) => {
     const examinationsRopository = getRepository(Examinations);
     const examination = await examinationsRopository.find();
+    return response.json(examination); 
+})
+
+
+examinationsRouter.get('/shelflife', async(request, response) => {
+    const examinationsRopository = getRepository(Examinations);
+    const examination = await examinationsRopository.find({ where: {dateExam: MoreThanOrEqual(shelf_life)} }); 
     return response.json(examination); 
 })
 
