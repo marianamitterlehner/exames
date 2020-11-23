@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { getRepository } from 'typeorm';
 
+
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 import Administrator from '../app/models/Administrator';
 import AdministratorController from '../app/controllers/AdministratorController';

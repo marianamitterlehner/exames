@@ -3,7 +3,7 @@ import {getRepository} from 'typeorm';
 
 import TypeExamsController from '../app/controllers/TypeExamController';
 import  TypeExams from '../app/models/TypeExams';
-
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const typeExamsRouter = Router();
 
@@ -23,13 +23,13 @@ typeExamsRouter.post('/', async (request, response) => {
     }
 });
 
-typeExamsRouter.get('/', async(request, response) => {
+typeExamsRouter.get('/', ensureAuthenticated, async(request, response) => {
     const typeExamsRopository = getRepository(TypeExams);
     const typeExam = await typeExamsRopository.find();
     return response.json(typeExam); 
 })
 
-typeExamsRouter.delete('/:id', async(request, response) => {
+typeExamsRouter.delete('/:id', ensureAuthenticated, async(request, response) => {
     const typeExamsRopository = getRepository(TypeExams);
     const {id} = request.params;
     await typeExamsRopository.delete(id);

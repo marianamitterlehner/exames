@@ -3,7 +3,7 @@ import {getRepository} from 'typeorm';
 
 import ExamsController from '../app/controllers/ExamsController';
 import  Exams from '../app/models/Exams';
-
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const examsRouter = Router();
 
@@ -23,13 +23,13 @@ examsRouter.post('/', async (request, response) => {
     }
 });
 
-examsRouter.get('/', async(request, response) => {
+examsRouter.get('/', ensureAuthenticated,  async(request, response) => {
     const examsRopository = getRepository(Exams);
     const exam = await examsRopository.find();
     return response.json(exam); 
 })
 
-examsRouter.delete('/:id', async(request, response) => {
+examsRouter.delete('/:id', ensureAuthenticated,  async(request, response) => {
     const examsRopository = getRepository(Exams);
     const {id} = request.params;
     await examsRopository.delete(id);

@@ -2,12 +2,12 @@ import { request, response, Router} from 'express';
 import {getRepository,MoreThanOrEqual } from 'typeorm';
 import ExaminationsController from '../app/controllers/ExaminationsController';
 import Examinations from '../app/models/Examinations';
-import  Exams from '../app/models/Exams';
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const examinationsRouter = Router();
 
 
-examinationsRouter.post('/', async (request, response) => {
+examinationsRouter.post('/', ensureAuthenticated, async (request, response) => {
     try{
         const { id_employee, id_exam, id_typeExam } = request.body;
         const examinationsController = new ExaminationsController();
@@ -22,20 +22,20 @@ examinationsRouter.post('/', async (request, response) => {
     }
 });
 
-examinationsRouter.get('/', async(request, response) => {
+examinationsRouter.get('/', ensureAuthenticated, async(request, response) => {
     const examinationsRopository = getRepository(Examinations);
     const examination = await examinationsRopository.find();
     return response.json(examination); 
 })
 
 
-examinationsRouter.get('/shelflife', async(request, response) => {
+examinationsRouter.get('/shelflife', ensureAuthenticated, async(request, response) => {
     const examinationsRopository = getRepository(Examinations);
     const examination = await examinationsRopository.find({ where: {dateExam: MoreThanOrEqual(shelf_life)} }); 
     return response.json(examination); 
 })
 
-examinationsRouter.delete('/:id', async(request, response) => {
+examinationsRouter.delete('/:id', ensureAuthenticated, async(request, response) => {
     const examinationsRopository = getRepository(Examinations);
     const {id} = request.params;
     await examinationsRopository.delete(id);
